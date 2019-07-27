@@ -81,3 +81,61 @@ class App extends React.Component {
   }
 }
 ```
+
+## API
+
+### createDatePicker
+- Type: `(?DatePickerOptions) => DatePicker`
+- Default: `{}`
+
+> TODO: Quality description
+
+### DatePickerOptions
+- Type: `Object`
+
+Params:
+
+| Name | Type | Description 
+| --- | --- | ---
+| groupByWeek | `boolean` | When true, returns a 2D array where each top-level array represents a week beginning on Sunday in the month 
+| initialDate | `Date  \| string` | The initial date the datepicker should utilize. The initial month will be calculated based on initialDate. Default: `new Date()` 
+| includeTrailers | `boolean` | Often the first week of a month begins at the end of a previous month (e.g. July 2019 started on a Monday, leaving a trailing Sunday from the previous month). By default, "trailers" are included in the month. 
+| retainMonthsRadius | `number` | (NOT YET IMPLEMENTED/UNDER CONSIDERATION) For potential gains (needs benchmarking), calculated months can be retained based on a radius of months relative the currently selected month. That is, a radius of 2 with a selected month of July would hold on to a previously calculated May, June, August and September.
+| monthNameFormat | `'short' \| 'long'` | (WILL LIKELY ABROGATE IN FAVOR OF A FORMATTER OR LEAVE UP TO THE CONSUMER)  
+
+### DatePicker
+- Type: `Object`
+
+Params:
+
+| Name | Type | Description
+| --- | --- | ---
+| subscribe | `(DatePickerState) => () => void` | A function that will subscribe a callback to changes in the datepicker. The function returns a function that when called will unsubscribe the function from updates.
+| incrementMonth | `() => void` | Increment the current month forward 
+| decrementMonth | `() => void` | Decrement the current month backward
+| resetMonth | `() => void` | Reset the current month to be inline with the currently selected date
+| setDate | `(Date) => void` | Set the selected date
+
+### DatePickerState
+- Type: `Object`
+
+Params:
+
+| Name | Type | Description
+| --- | --- | ---
+| month | `Array<DatePickerDate>` | An array of dates to be rendered by the renderer
+| selectedDate | `Date` | The current selected date
+| selectedMonth | `Date` | The current selected month (may not align with date)
+
+### DatePickerDate
+- Type: `Object`
+
+Params: 
+
+| Name | Type | Description
+| --- | --- | ---
+| day | `Date` | The day of the week to which the date belongs
+| date | `number` | The day of the month
+| iso | `string` | An ISO-8601 formatted date-time string in UTC
+| obj | `Date` | A native JS Date object
+| selected | `boolean` | Whether the date is the currently selected date
