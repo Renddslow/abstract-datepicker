@@ -1,7 +1,7 @@
 # Abstract Date Picker
 > An abstract logic handler for rendering datepickers in any UI framework.
 
-> NOTE: This package is still in need of heavy testing before it is ready for production use.
+> ⚠️ WARNING: This package is still in need of heavy testing before it is ready for production use. ⚠️
 
 ## Installation
 ```
