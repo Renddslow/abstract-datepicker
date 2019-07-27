@@ -1,6 +1,8 @@
 # Abstract Date Picker
 > An abstract logic handler for rendering datepickers in any UI framework.
 
+> NOTE: This package is still in need of heavy testing before it is ready for production use.
+
 ## Installation
 ```
 yarn add abstract-datepicker
@@ -14,47 +16,68 @@ The current intended use for this module is a business application that I work o
 import React from 'react';
 import { createDatePicker } from 'abstract-datepicker';
 
-import { DatePickerContainer, DatePickerHeader, Calendar } from './styled';
+import { Date, Button, Row, Week } from './styled';
 
-export default class Picker extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
-    
+    this.picker = createDatePicker({
+      groupByWeek: true,
+    });
+
     this.state = {
-      selectedDate: this.props.value || new Date(),
+      monthName: '',
+      month: [],
     };
-    
-    this.picker = createDatePicker({});
   }
-  
+
   componentDidMount() {
-    this.unsubscribe = this.picker.subscribe((state) => {
-      this.setState(state);  
+    this.unsubscribe = this.picker.subscribe(({ month, monthName, year }) => {
+      this.setState({
+        month,
+        monthName,
+        year,
+      });
     });
   }
-  
+
   componentWillUnmount() {
     this.unsubscribe();
   }
-  
-  handleClick = (date) => (e) => {
-    e.stopPropagation();
-    this.picker.setSelected(date);
-  };
-  
+
+  incrementMonth = () => this.picker.incrementMonth();
+  decrementMonth = () => this.picker.decrementMonth();
+
   render() {
+    const { monthName, year, month } = this.state;
+
     return (
-      <DatePickerContainer>
-        <DatePickerHeader />
-        <Calendar>
+      <>
+        <Row>
+          <Button onClick={this.decrementMonth}>Prev Month</Button>
+          <span>{monthName} {year}</span>
+          <Button onClick={this.incrementMonth}>Next Month</Button>
+        </Row>
+        <div>
           {
-            this.picker.dates.map((date) => (
-              <Date key={date.id} onClick={this.handleClick(date)}>{date.date}</Date>
+            month.map((week, idx) => (
+              <Week key={`${year}-${monthName}-week-${idx}`}>
+                {
+                  week.map((day) => (
+                    <Date
+                      key={day.iso}
+                      selected={day.selected}
+                    >
+                      {day.date}
+                    </Date>
+                  ))
+                }
+              </Week>
             ))
           }
-        </Calendar>
-      </DatePickerContainer>
-    );
+        </div>
+      </>
+    )
   }
 }
 ```
