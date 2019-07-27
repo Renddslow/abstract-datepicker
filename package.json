@@ -1,6 +1,6 @@
 {
   "name": "abstract-datepicker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An abstract logic handler for rendering datepickers in any UI framework.",
   "main": "dist/abstract-datepicker.js",
   "repository": "https://github.com/Renddslow/abstract-datepicker",
